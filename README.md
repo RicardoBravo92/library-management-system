@@ -12,8 +12,8 @@ API REST construida con Node.js, TypeScript, Express y Prisma para la gestión d
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone <url-del-repositorio>
-   cd BackendRole
+   git clone git@github.com:RicardoBravo92/library-management-system.git
+   cd library-management-system
    ```
 
 2. **Instalar dependencias:**
