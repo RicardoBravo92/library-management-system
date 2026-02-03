@@ -56,14 +56,14 @@ export const getAllAuthors = async (
 };
 
 export const getAuthorDetail = async (id: number) => {
-  if (isNaN(id)) throw new AppError('Invalid author ID', 400);
+  if (isNaN(id)) throw new AppError('Invalid author ID', 400, 'INVALID_AUTHOR_ID');
 
   const author = await prisma.author.findUnique({
     where: { id },
     include: { books: true },
   });
 
-  if (!author) throw new AppError('Author not found', 404);
+  if (!author) throw new AppError('Author not found', 404, 'AUTHOR_NOT_FOUND');
   return author;
 };
 
@@ -71,7 +71,7 @@ export const updateAuthorDetail = async (id: number, data: unknown) => {
   if (isNaN(id)) throw new AppError('Invalid author ID', 400);
 
   const existingAuthor = await prisma.author.findUnique({ where: { id } });
-  if (!existingAuthor) throw new AppError('Author not found', 404);
+  if (!existingAuthor) throw new AppError('Author not found', 404, 'AUTHOR_NOT_FOUND');
 
   const validatedData = authorSchema.partial().parse(data);
   
@@ -92,7 +92,7 @@ export const deleteAuthorById = async (id: number) => {
   if (!existingAuthor) throw new AppError('Author not found', 404);
 
   if (existingAuthor.books.length > 0) {
-    throw new AppError(`Cannot delete author with associated books. Books count: ${existingAuthor.books.length}`, 400);
+    throw new AppError(`Cannot delete author with associated books. Books count: ${existingAuthor.books.length}`, 400, 'AUTHOR_HAS_BOOKS');
   }
 
   await prisma.author.delete({ where: { id } });

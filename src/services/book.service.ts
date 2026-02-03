@@ -6,9 +6,9 @@ import { PaginationParams, PaginatedResponse, buildPaginatedResponse } from '../
 import eventEmitter from '../utils/events.js';
 
 const bookSchema = z.object({
-  title: z.string().min(1),
+  title: z.string().min(1, 'Title is required'),
   genre: z.string().optional(),
-  authorId: z.number(),
+  authorId: z.number({ message: 'Author ID must be a number' }).min(1, 'Author ID is required'),
 });
 
 export const createNewBook = async (data: unknown) => {
@@ -19,7 +19,7 @@ export const createNewBook = async (data: unknown) => {
   });
 
   if (!author) {
-    throw new AppError('Author not found', 404);
+    throw new AppError('Author not found', 404, 'AUTHOR_NOT_FOUND');
   }
 
   const book = await prisma.book.create({ data: validatedData });
@@ -57,14 +57,14 @@ export const getAllBooks = async (
 };
 
 export const getBookDetail = async (id: number) => {
-  if (isNaN(id)) throw new AppError('Invalid book ID', 400);
+  if (isNaN(id)) throw new AppError('Invalid book ID', 400, 'INVALID_BOOK_ID');
 
   const book = await prisma.book.findUnique({
     where: { id },
     include: { author: true },
   });
 
-  if (!book) throw new AppError('Book not found', 404);
+  if (!book) throw new AppError('Book not found', 404, 'BOOK_NOT_FOUND');
   return book;
 };
 
@@ -72,7 +72,7 @@ export const updateBookDetail = async (id: number, data: unknown) => {
   if (isNaN(id)) throw new AppError('Invalid book ID', 400);
 
   const existingBook = await prisma.book.findUnique({ where: { id } });
-  if (!existingBook) throw new AppError('Book not found', 404);
+  if (!existingBook) throw new AppError('Book not found', 404, 'BOOK_NOT_FOUND');
 
   const validatedData = bookSchema.partial().parse(data);
 
@@ -80,7 +80,7 @@ export const updateBookDetail = async (id: number, data: unknown) => {
     const author = await prisma.author.findUnique({
       where: { id: validatedData.authorId },
     });
-    if (!author) throw new AppError('Author not found', 404);
+    if (!author) throw new AppError('Author not found', 404, 'AUTHOR_NOT_FOUND');
   }
 
   const book = await prisma.book.update({
@@ -99,7 +99,7 @@ export const updateBookDetail = async (id: number, data: unknown) => {
 };
 
 export const deleteBookById = async (id: number) => {
-  if (isNaN(id)) throw new AppError('Invalid book ID', 400);
+  if (isNaN(id)) throw new AppError('Invalid book ID', 400, 'INVALID_BOOK_ID');
 
   const book = await prisma.book.findUnique({ where: { id } });
   if (!book) throw new AppError('Book not found', 404);
