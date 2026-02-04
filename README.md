@@ -24,7 +24,7 @@ API REST construida con Node.js, TypeScript, Express y Prisma para la gestión d
 3. **Configurar variables de entorno:**
    Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
    ```env
-   DATABASE_URL="file:./dev.db"
+   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/library"
    JWT_SECRET="tu_clave_secreta_super_segura_aqui"
    PORT=3000
 
