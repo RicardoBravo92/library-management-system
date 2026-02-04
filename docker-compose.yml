@@ -1,15 +1,37 @@
-version: '3.8'
-
 services:
   app:
     build: .
     ports:
       - "3000:3000"
-    environment:
-      - DATABASE_URL=file:./dev.db
-      - JWT_SECRET=super_secret_key_123
-      - PORT=3000
-      - NODE_ENV=production
-    volumes:
-      - ./prisma:/usr/src/app/prisma
     restart: always
+    depends_on:
+      - postgres
+    networks:
+      - prisma-network
+    environment:
+      DATABASE_URL: "postgresql://postgres:prisma@postgres:5432/postgres"
+      NODE_ENV: "production"
+      JWT_SECRET: "secret"
+      RATE_LIMIT_MAX: 100
+      AUTH_RATE_LIMIT_MAX: 10
+
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - prisma-network
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=prisma
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  
+
+networks:
+  prisma-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

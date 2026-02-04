@@ -1,14 +1,11 @@
 import prisma from '../src/config/prisma.js';
 import bcrypt from 'bcryptjs';
 
-// Usamos el prisma ya configurado en src/config/prisma.ts
-
 async function main() {
   console.log('🌱 Iniciando seeder...');
 
   const hashedPassword = await bcrypt.hash('password123', 10);
 
-  // Crear usuarios (upsert: no borra, agrega si no existen)
   const userData = [
     { email: 'admin@library.com', password: hashedPassword, name: 'Admin' },
     { email: 'user@library.com', password: hashedPassword, name: 'Usuario Demo' },
@@ -24,7 +21,6 @@ async function main() {
   }
   console.log(`✅ ${usersCreated} usuarios procesados (creados o ya existían)`);
 
-  // Obtener o crear autores (sin borrar los existentes)
   const authorData = [
     { name: 'Gabriel García Márquez', nationality: 'Colombiano' },
     { name: 'Isabel Allende', nationality: 'Chilena' },
@@ -43,7 +39,7 @@ async function main() {
   }
   console.log(`✅ ${authors.length} autores listos (creados o existentes)`);
 
-  // Crear libros solo si no existen (mismo título + autor)
+
   const bookData = [
     { title: 'Cien años de soledad', genre: 'Realismo mágico', authorIndex: 0 },
     { title: 'El amor en los tiempos del cólera', genre: 'Romance', authorIndex: 0 },

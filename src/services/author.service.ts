@@ -1,6 +1,6 @@
 import prisma from '../config/prisma.js';
 import { z } from 'zod';
-import { Prisma } from '../generated/prisma/client.js';
+import type { Prisma } from '@prisma/client';
 import { AppError } from '../utils/AppError.js';
 import { PaginationParams, PaginatedResponse, buildPaginatedResponse } from '../utils/pagination.js';
 
@@ -97,3 +97,4 @@ export const deleteAuthorById = async (id: number) => {
 
   await prisma.author.delete({ where: { id } });
 };
+

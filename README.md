@@ -6,7 +6,7 @@ API REST construida con Node.js, TypeScript, Express y Prisma para la gestión d
 
 - Node.js (v16 o superior)
 - npm o yarn
-- SQLite (incluido en Node.js)
+- postgresql (incluido en Node.js)
 
 ## 🚀 Instalación
 
@@ -390,7 +390,7 @@ docker-compose up --build
 - **TypeScript**: Superset tipado de JavaScript
 - **Express**: Framework web
 - **Prisma**: ORM para base de datos
-- **SQLite**: Base de datos
+- **postgresql**: Base de datos
 - **JWT**: Autenticación
 - **bcryptjs**: Hash de contraseñas
 - **Zod**: Validación de esquemas

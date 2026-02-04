@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import ExcelJS from 'exceljs';
-import prisma from '../config/prisma';
+import prisma from '../config/prisma.js';
 
 export const exportData = async (req: Request, res: Response) => {
   try {
@@ -33,7 +33,7 @@ export const exportData = async (req: Request, res: Response) => {
     };
     
     authorSheet.addRows(
-      authors.map((a) => ({
+      authors.map((a: any) => ({
         ...a,
         createdAt: a.createdAt.toISOString().split('T')[0],
       }))
@@ -59,7 +59,7 @@ export const exportData = async (req: Request, res: Response) => {
     };
     
     bookSheet.addRows(
-      books.map((b) => ({
+      books.map((b: any) => ({
         id: b.id,
         title: b.title,
         genre: b.genre || '',
@@ -91,3 +91,4 @@ export const exportData = async (req: Request, res: Response) => {
     });
   }
 };
+

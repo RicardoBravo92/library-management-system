@@ -10,29 +10,25 @@ router.use(authMiddleware);
  * @swagger
  * /authors:
  *   get:
- *     summary: Get all authors (con paginación y filtros)
+ *     summary: Get all authors (with pagination and filters)
  *     tags: [Authors]
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - in: query
  *         name: page
  *         schema: { type: integer, default: 1 }
- *         description: Número de página
  *       - in: query
  *         name: limit
  *         schema: { type: integer, default: 10 }
- *         description: Registros por página (máx 100)
  *       - in: query
  *         name: name
  *         schema: { type: string }
- *         description: Filtrar por nombre (contiene)
  *       - in: query
  *         name: nationality
  *         schema: { type: string }
- *         description: Filtrar por nacionalidad (contiene)
  *     responses:
  *       200:
- *         description: Lista paginada de autores con data y pagination
+ *         description: Paginated list of authors
  *   post:
  *     summary: Create a new author
  *     tags: [Authors]
@@ -48,8 +44,18 @@ router.use(authMiddleware);
  *               name: { type: string }
  *               nationality: { type: string }
  *     responses:
- *       201: { description: Author created }
- *       400: { description: Validation error }
+ *       201:
+ *         description: Author created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Author'
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.get('/', getAuthors);
 router.get('/:id', getAuthorById);
@@ -70,8 +76,18 @@ router.delete('/:id', deleteAuthor);
  *         required: true
  *         schema: { type: integer }
  *     responses:
- *       200: { description: Author details }
- *       404: { description: Author not found }
+ *       200:
+ *         description: Author details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Author'
+ *       404:
+ *         description: Author not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *   put:
  *     summary: Update an author
  *     tags: [Authors]
@@ -91,8 +107,10 @@ router.delete('/:id', deleteAuthor);
  *               name: { type: string }
  *               nationality: { type: string }
  *     responses:
- *       200: { description: Author updated }
- *       404: { description: Author not found }
+ *       200:
+ *         description: Author updated
+ *       404:
+ *         description: Author not found
  *   delete:
  *     summary: Delete an author
  *     tags: [Authors]
@@ -104,8 +122,19 @@ router.delete('/:id', deleteAuthor);
  *         schema: { type: integer }
  *     responses:
  *       200: { description: Author deleted }
- *       404: { description: Author not found }
- *       400: { description: Author has associated books }
+ *       404:
+ *         description: Author not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       400:
+ *         description: Business rule violation or error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 
 export default router;
+

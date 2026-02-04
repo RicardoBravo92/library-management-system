@@ -10,33 +10,28 @@ router.use(authMiddleware);
  * @swagger
  * /books:
  *   get:
- *     summary: Get all books (con paginación y filtros)
+ *     summary: Get all books (with pagination and filters)
  *     tags: [Books]
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - in: query
  *         name: page
  *         schema: { type: integer, default: 1 }
- *         description: Número de página
  *       - in: query
  *         name: limit
  *         schema: { type: integer, default: 10 }
- *         description: Registros por página (máx 100)
  *       - in: query
  *         name: title
  *         schema: { type: string }
- *         description: Filtrar por título (contiene)
  *       - in: query
  *         name: genre
  *         schema: { type: string }
- *         description: Filtrar por género (contiene)
  *       - in: query
  *         name: authorId
  *         schema: { type: integer }
- *         description: Filtrar por ID de autor
  *     responses:
  *       200:
- *         description: Lista paginada de libros
+ *         description: Paginated list of books
  *   post:
  *     summary: Create a new book
  *     tags: [Books]
@@ -53,9 +48,24 @@ router.use(authMiddleware);
  *               genre: { type: string }
  *               authorId: { type: integer }
  *     responses:
- *       201: { description: Book created }
- *       400: { description: Validation error }
- *       404: { description: Author not found }
+ *       201:
+ *         description: Book created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         description: Author not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.get('/', getBooks);
 router.get('/:id', getBookById);
@@ -76,8 +86,18 @@ router.delete('/:id', deleteBook);
  *         required: true
  *         schema: { type: integer }
  *     responses:
- *       200: { description: Book details }
- *       404: { description: Book not found }
+ *       200:
+ *         description: Book details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       404:
+ *         description: Book not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *   put:
  *     summary: Update a book
  *     tags: [Books]
@@ -98,8 +118,10 @@ router.delete('/:id', deleteBook);
  *               genre: { type: string }
  *               authorId: { type: integer }
  *     responses:
- *       200: { description: Book updated }
- *       404: { description: Book not found }
+ *       200:
+ *         description: Book updated
+ *       404:
+ *         description: Book not found
  *   delete:
  *     summary: Delete a book
  *     tags: [Books]
@@ -111,7 +133,13 @@ router.delete('/:id', deleteBook);
  *         schema: { type: integer }
  *     responses:
  *       200: { description: Book deleted }
- *       404: { description: Book not found }
+ *       404:
+ *         description: Book not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 
 export default router;
+

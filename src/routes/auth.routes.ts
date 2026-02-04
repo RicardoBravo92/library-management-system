@@ -19,7 +19,7 @@ router.use(authRateLimiter);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [email, password]
+ *             required: [email, password, name]
  *             properties:
  *               email: 
  *                 type: string
@@ -31,7 +31,7 @@ router.use(authRateLimiter);
  *                 example: password123
  *               name: 
  *                 type: string
- *                 example: Nombre Usuario
+ *                 example: John Doe
  *     responses:
  *       201:
  *         description: User created successfully
@@ -40,14 +40,23 @@ router.use(authRateLimiter);
  *             schema:
  *               type: object
  *               properties:
+ *                 success: { type: boolean, example: true }
  *                 message:
  *                   type: string
  *                 userId:
  *                   type: integer
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       409:
  *         description: User already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.post('/register', register);
 
@@ -78,26 +87,21 @@ router.post('/register', register);
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                 token:
- *                   type: string
- *                 user:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: integer
- *                     email:
- *                       type: string
- *                     name:
- *                       type: string
+ *               $ref: '#/components/schemas/AuthSuccess'
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       401:
  *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.post('/login', login);
 
 export default router;
+

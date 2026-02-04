@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { Prisma } from '../generated/prisma/client.js';
+import type { Prisma } from '@prisma/client';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
@@ -53,3 +53,4 @@ export const buildPaginatedResponse = <T>(
     },
   };
 };
+

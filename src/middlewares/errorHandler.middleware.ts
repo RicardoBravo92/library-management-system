@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { Prisma } from '../generated/prisma/client.js';
+import { Prisma } from '@prisma/client';
 import { AppError } from '../utils/AppError.js';
 import { env } from '../config/env.js';
 
@@ -33,22 +33,23 @@ export const errorHandler = (
   }
   // 3. Handle Database Errors (Prisma)
   else if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    if (err.code === 'P2002') {
+    const prismaErr = err as any;
+    if (prismaErr.code === 'P2002') {
       statusCode = 409;
       message = 'A record with these details already exists';
       errorCode = 'DUPLICATE_ENTRY';
-      details = { target: err.meta?.target };
-    } else if (err.code === 'P2025') {
+      details = { target: prismaErr.meta?.target };
+    } else if (prismaErr.code === 'P2025') {
       statusCode = 404;
       message = 'The requested resource does not exist';
       errorCode = 'NOT_FOUND';
-    } else if (err.code === 'P2003') {
+    } else if (prismaErr.code === 'P2003') {
       statusCode = 400;
       message = 'Relationship error: parent record does not exist';
       errorCode = 'FOREIGN_KEY_FAILED';
     } else {
       message = 'Database error';
-      errorCode = `PRISMA_${err.code}`;
+      errorCode = `PRISMA_${prismaErr.code}`;
     }
   } 
   // 4. Handle Authentication Errors (JWT)
@@ -79,3 +80,4 @@ export const errorHandler = (
     timestamp: new Date().toISOString()
   });
 };
+

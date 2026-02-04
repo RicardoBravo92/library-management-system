@@ -28,3 +28,4 @@ router.use(authMiddleware);
 router.get('/', exportData);
 
 export default router;
+

@@ -41,6 +41,76 @@ const swaggerOptions = {
           bearerFormat: 'JWT',
         },
       },
+      schemas: {
+        ErrorResponse: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean', example: false },
+            status: { type: 'string', example: 'error' },
+            code: { type: 'string', example: 'VALIDATION_ERROR' },
+            message: { type: 'string', example: 'Detailed error message' },
+            details: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  field: { type: 'string' },
+                  message: { type: 'string' }
+                }
+              }
+            },
+            timestamp: { type: 'string', format: 'date-time' }
+          }
+        },
+        AuthSuccess: {
+          type: 'object',
+          properties: {
+            success: { type: 'boolean', example: true },
+            message: { type: 'string' },
+            token: { type: 'string' },
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'integer' },
+                email: { type: 'string' },
+                name: { type: 'string' }
+              }
+            }
+          }
+        },
+        Author: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            name: { type: 'string' },
+            nationality: { type: 'string' },
+            bookCount: { type: 'integer' },
+            createdAt: { type: 'string', format: 'date-time' },
+            updatedAt: { type: 'string', format: 'date-time' }
+          }
+        },
+        Book: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            title: { type: 'string' },
+            genre: { type: 'string' },
+            authorId: { type: 'integer' },
+            createdAt: { type: 'string', format: 'date-time' },
+            updatedAt: { type: 'string', format: 'date-time' }
+          }
+        },
+        User: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            email: { type: 'string' },
+            name: { type: 'string' },
+            createdAt: { type: 'string', format: 'date-time' },
+            updatedAt: { type: 'string', format: 'date-time' }
+          }
+        }
+      }
     },
     security: [{ bearerAuth: [] }],
     servers: [
@@ -62,3 +132,4 @@ app.use('/', routes);
 app.use(errorHandler);
 
 export default app;
+

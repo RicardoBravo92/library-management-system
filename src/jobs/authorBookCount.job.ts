@@ -7,3 +7,4 @@ export const authorBookCountJob = async (authorId: number) => {
     console.error(`[Job] Error updating book count for author ${authorId}:`, error);
   }
 };
+

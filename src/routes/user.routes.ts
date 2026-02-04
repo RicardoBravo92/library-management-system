@@ -10,29 +10,31 @@ router.use(authMiddleware);
  * @swagger
  * /users:
  *   get:
- *     summary: Get all users (con paginación y filtros)
+ *     summary: Get all users (with pagination and filters)
  *     tags: [Users]
  *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - in: query
  *         name: page
  *         schema: { type: integer, default: 1 }
- *         description: Número de página
  *       - in: query
  *         name: limit
  *         schema: { type: integer, default: 10 }
- *         description: Registros por página (máx 100)
  *       - in: query
  *         name: email
  *         schema: { type: string }
- *         description: Filtrar por email (contiene)
  *       - in: query
  *         name: name
  *         schema: { type: string }
- *         description: Filtrar por nombre (contiene)
  *     responses:
  *       200:
- *         description: Lista paginada de usuarios
+ *         description: Paginated list of users
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.get('/', getUsers);
 
@@ -42,12 +44,27 @@ router.get('/', getUsers);
  *   get:
  *     summary: Get user by ID
  *     tags: [Users]
+ *     security: [{ bearerAuth: [] }]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema: { type: integer }
+ *     responses:
+ *       200:
+ *         description: User details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.get('/:id', getUserById);
 
 export default router;
+

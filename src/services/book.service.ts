@@ -1,6 +1,6 @@
 import prisma from '../config/prisma.js';
 import { z } from 'zod';
-import { Prisma } from '../generated/prisma/client.js';
+import type { Prisma } from '@prisma/client';
 import { AppError } from '../utils/AppError.js';
 import { PaginationParams, PaginatedResponse, buildPaginatedResponse } from '../utils/pagination.js';
 import eventEmitter from '../utils/events.js';
@@ -108,3 +108,4 @@ export const deleteBookById = async (id: number) => {
   
   eventEmitter.emit('book.changed', book.authorId);
 };
+

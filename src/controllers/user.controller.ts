@@ -1,34 +1,39 @@
 import { Request, Response } from 'express';
-import prisma from '../config/prisma';
-import { Prisma } from '../generated/prisma/client.js';
-import {
-  getPaginationParams,
-  buildPaginatedResponse,
-} from '../utils/pagination';
+import prisma from '../config/prisma.js';
+import { getPaginationParams, buildPaginatedResponse } from '../utils/pagination.js';
 
-export const getUsers = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {    
   try {
     const { page, limit, skip } = getPaginationParams(req);
     const { email, name } = req.query;
 
-    const where: Prisma.UserWhereInput = {};
 
-    if (typeof email === 'string' && email.trim()) {
-      where.email = { contains: email.trim() };
-    }
-    if (typeof name === 'string' && name.trim()) {
-      where.name = { contains: name.trim() };
-    }
 
     const [users, total] = await Promise.all([
       prisma.user.findMany({
-        where,
+        where: {
+          email: {
+            contains: email as string,
+          },
+          name: {
+            contains: name as string,
+          },
+        },
         select: { id: true, email: true, name: true, createdAt: true },
         orderBy: { createdAt: 'desc' },
         skip,
         take: limit,
       }),
-      prisma.user.count({ where }),
+      prisma.user.count({ 
+        where: {
+          email: {
+            contains: email as string,
+          },
+          name: {
+            contains: name as string,
+          },
+        } 
+       }),
     ]);
 
     const response = buildPaginatedResponse(users, total, {
@@ -65,3 +70,4 @@ export const getUserById = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+
