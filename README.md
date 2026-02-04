@@ -104,7 +104,7 @@ Registra un nuevo usuario.
 {
   "email": "usuario@example.com",
   "password": "password123",
-  "name": "Nombre Usuario" // Opcional
+  "name": "John Doe"
 }
 ```
 
@@ -112,7 +112,9 @@ Registra un nuevo usuario.
 ```json
 {
   "message": "User created successfully",
-  "userId": 1
+  "userId": 1,
+  "email": "usuario@example.com",
+  "name": "John Doe"
 }
 ```
 
@@ -135,7 +137,7 @@ Inicia sesión y obtiene un token JWT.
   "user": {
     "id": 1,
     "email": "usuario@example.com",
-    "name": "Nombre Usuario"
+    "name": "John Doe"
   }
 }
 ```
