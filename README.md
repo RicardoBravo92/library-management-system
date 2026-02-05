@@ -46,25 +46,12 @@ API REST construida con Node.js, TypeScript, Express y Prisma para la gestión d
    ```
    Crea usuarios, autores y libros de ejemplo. Credenciales: `admin@library.com` / `password123`
 
-### Modo Desarrollo
-```bash
-npm run dev
-```
 
-### Modo Producción
-```bash
-npm run build
-npm start
-```
-
-La API estará disponible en `http://localhost:3000` (o el puerto especificado en `.env`).
 
 ## 📚 Documentación API
 
 La documentación interactiva de Swagger está disponible en:
-```
-http://localhost:3000/api-docs
-```
+http://localhost:3000/api/v1/api-docs
 
 ## 🔑 Autenticación
 
@@ -82,55 +69,26 @@ Todas las rutas (excepto `/auth/register` y `/auth/login`) requieren autenticaci
 
 ### Health Check
 
-#### `GET /health`
-Verifica el estado de la API.
-
-**Respuesta exitosa (200):**
-```json
-{
-  "status": "OK",
-  "message": "API is running",
-  "timestamp": "2024-01-01T00:00:00.000Z"
-}
-```
-
-### Autenticación
-
-#### `POST /auth/register`
-Registra un nuevo usuario.
-
-**Body:**
-```json
 {
   "email": "usuario@example.com",
   "password": "password123",
   "name": "John Doe"
 }
-```
 
 **Respuesta exitosa (201):**
-```json
 {
   "message": "User created successfully",
   "userId": 1,
   "email": "usuario@example.com",
   "name": "John Doe"
 }
-```
 
-#### `POST /auth/login`
-Inicia sesión y obtiene un token JWT.
-
-**Body:**
-```json
 {
   "email": "usuario@example.com",
   "password": "password123"
 }
-```
 
 **Respuesta exitosa (200):**
-```json
 {
   "message": "Login successful",
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -140,7 +98,6 @@ Inicia sesión y obtiene un token JWT.
     "name": "John Doe"
   }
 }
-```
 
 ### Usuarios (Protegido)
 
@@ -154,7 +111,6 @@ Obtiene la lista de usuarios con **paginación** y **filtros**.
 - `name` - Filtrar por nombre (contiene)
 
 **Respuesta paginada:**
-```json
 {
   "data": [...],
   "pagination": {
@@ -166,7 +122,6 @@ Obtiene la lista de usuarios con **paginación** y **filtros**.
     "hasPrev": false
   }
 }
-```
 
 #### `GET /users/:id`
 Obtiene los detalles de un usuario específico.
@@ -184,27 +139,19 @@ Obtiene la lista de autores con **paginación** y **filtros**.
 #### `GET /authors/:id`
 Obtiene los detalles de un autor específico con sus libros.
 
-#### `POST /authors`
-Crea un nuevo autor.
-
-**Body:**
-```json
 {
   "name": "Gabriel García Márquez",
   "nationality": "Colombiano" // Opcional
 }
-```
 
 #### `PUT /authors/:id`
 Actualiza un autor existente.
 
 **Body:**
-```json
 {
   "name": "Gabriel García Márquez",
   "nationality": "Colombiano"
 }
-```
 
 #### `DELETE /authors/:id`
 Elimina un autor (solo si no tiene libros asociados).
@@ -227,25 +174,21 @@ Obtiene los detalles de un libro específico con información del autor.
 Crea un nuevo libro. **Automáticamente actualiza el contador de libros del autor mediante un Job.**
 
 **Body:**
-```json
 {
   "title": "Cien años de soledad",
   "genre": "Realismo mágico", // Opcional
   "authorId": 1
 }
-```
 
 #### `PUT /books/:id`
 Actualiza un libro existente. **Si cambia el autor, actualiza ambos contadores.**
 
 **Body:**
-```json
 {
   "title": "Cien años de soledad",
   "genre": "Realismo mágico",
   "authorId": 1
 }
-```
 
 #### `DELETE /books/:id`
 Elimina un libro. **Automáticamente actualiza el contador de libros del autor.**
@@ -302,51 +245,16 @@ npm run prisma:seed
 
 Luego inicia sesión con: `admin@library.com` / `password123`
 
-### Ejemplo de flujo completo (sin seeder):
-
-1. **Registrar usuario:**
-   ```bash
-   curl -X POST http://localhost:3000/auth/register \
+   curl -X POST http://localhost:3000/api/v1/auth/register \
      -H "Content-Type: application/json" \
      -d '{"email":"test@example.com","password":"password123","name":"Test User"}'
-   ```
-
-2. **Login:**
-   ```bash
-   curl -X POST http://localhost:3000/auth/login \
-     -H "Content-Type: application/json" \
-     -d '{"email":"test@example.com","password":"password123"}'
-   ```
-   Guarda el token recibido.
-
-3. **Crear autor:**
-   ```bash
-   curl -X POST http://localhost:3000/authors \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer <tu_token>" \
-     -d '{"name":"Gabriel García Márquez","nationality":"Colombiano"}'
-   ```
-
-4. **Crear libro:**
-   ```bash
-   curl -X POST http://localhost:3000/books \
-     -H "Content-Type: application/json" \
-     -H "Authorization: Bearer <tu_token>" \
-     -d '{"title":"Cien años de soledad","genre":"Realismo mágico","authorId":1}'
-   ```
-
-5. **Listar autores con paginación y filtros:**
-   ```bash
-   curl "http://localhost:3000/authors?page=1&limit=5&name=García" \
-     -H "Authorization: Bearer <tu_token>"
-   ```
-
+   
+   
 6. **Exportar datos:**
-   ```bash
-   curl -X GET http://localhost:3000/export \
+   
+   curl -X GET http://localhost:3000/api/v1/export \
      -H "Authorization: Bearer <tu_token>" \
      --output export.xlsx
-   ```
 
 ## 🐳 Docker (Opcional)
 
