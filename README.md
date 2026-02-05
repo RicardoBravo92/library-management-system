@@ -24,7 +24,7 @@ API REST construida con Node.js, TypeScript, Express y Prisma para la gestión d
 3. **Configurar variables de entorno:**
    Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
    ```env
-   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/library"
+   DATABASE_URL="postgresql://postgres:prisma@localhost:5432/postgres"
    JWT_SECRET="tu_clave_secreta_super_segura_aqui"
    PORT=3000
 
@@ -71,35 +71,10 @@ Todas las rutas (excepto `/auth/register` y `/auth/login`) requieren autenticaci
 
 ### Health Check
 
-{
-  "email": "usuario@example.com",
-  "password": "password123",
-  "name": "John Doe"
-}
+```bash
+http://localhost:3000/api/v1/health
+```
 
-**Respuesta exitosa (201):**
-{
-  "message": "User created successfully",
-  "userId": 1,
-  "email": "usuario@example.com",
-  "name": "John Doe"
-}
-
-{
-  "email": "usuario@example.com",
-  "password": "password123"
-}
-
-**Respuesta exitosa (200):**
-{
-  "message": "Login successful",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": 1,
-    "email": "usuario@example.com",
-    "name": "John Doe"
-  }
-}
 
 ### Usuarios (Protegido)
 
