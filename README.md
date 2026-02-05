@@ -51,7 +51,9 @@ API REST construida con Node.js, TypeScript, Express y Prisma para la gestión d
 ## 📚 Documentación API
 
 La documentación interactiva de Swagger está disponible en:
-http://localhost:3000/api/v1/api-docs
+   ```bash
+http://localhost:3000/api-docs
+ ```
 
 ## 🔑 Autenticación
 
