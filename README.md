@@ -238,6 +238,24 @@ BackendRole/
 
 ## 🧪 Pruebas
 
+### Ejecutar Tests
+
+Para ejecutar las pruebas automatizadas (unitarias y de integración), asegúrate de que el contenedor de Docker `postgres` esté corriendo, ya que las pruebas de integración utilizan una base de datos real en un entorno de prueba.
+
+```bash
+# Asegurar que la base de datos de Docker esté arriba
+docker-compose up -d postgres
+
+# Ejecutar las pruebas
+npm run test
+```
+
+Los tests cubren:
+- **Pruebas Unitarias:** Servicios y lógica de negocio.
+- **Pruebas de Integración:** Endpoints de la API (`/health`, `/auth`, `/books`, `/users`).
+
+> **Nota:** El comando `npm run test` está configurado para usar `node --experimental-vm-modules` para soportar módulos ES (ESM) con Jest y se conecta automáticamente al contenedor de Postgres local configurado en `.env.test`.
+
 ### Opción rápida con seeder
 
 Ejecuta el seeder para tener datos de prueba listos:
@@ -247,9 +265,11 @@ npm run prisma:seed
 
 Luego inicia sesión con: `admin@library.com` / `password123`
 
-   curl -X POST http://localhost:3000/api/v1/auth/register \
-     -H "Content-Type: application/json" \
-     -d '{"email":"test@example.com","password":"password123","name":"Test User"}'
+```bash
+curl -X POST http://localhost:3000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123","name":"Test User"}'
+```
    
    
 6. **Exportar datos:**

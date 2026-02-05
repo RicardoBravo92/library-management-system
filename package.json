@@ -9,7 +9,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "prisma db seed",
     "prisma:studio": "prisma studio",
-    "test": "jest",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build": "tsc",
     "dev": "tsx watch src/index.ts",
     "db:deploySeed": "npx prisma migrate deploy && npx prisma generate && npx prisma db seed",
